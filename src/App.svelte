@@ -1,51 +1,7 @@
 <script>
   import TileContainer from './components/TileContainer.svelte';
   import Keyboard from './components/Keyboard.svelte';
-
-  const wordGrid = [
-    [
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-    ],
-    [
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-    ],
-    [
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-    ],
-    [
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-    ],
-    [
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-    ],
-    [
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-      {letter: ''},
-    ],
-  ];
+  import {wordGrid} from "./Shared/store";
 
   const onKeySelected = ({detail}) => {
     console.log(detail)
@@ -57,7 +13,7 @@
     <div class="title-container">
         <h1>Wordle</h1>
     </div>
-    <TileContainer wordGrid={wordGrid}/>
+    <TileContainer wordGrid={$wordGrid}/>
     <Keyboard on:selectKey={onKeySelected}/>
 </div>
 
