@@ -1,10 +1,13 @@
 <script>
     import KEYS from "../Shared/keyboard";
+    import {createEventDispatcher} from 'svelte';
+
+    const dispatch = createEventDispatcher();
 </script>
 
 <div class="key-container">
     {#each KEYS as key, index}
-        <button>{key}</button>
+        <button on:click={() => dispatch('selectKey', key)}>{key}</button>
     {/each}
 </div>
 

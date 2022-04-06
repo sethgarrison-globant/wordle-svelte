@@ -1,48 +1,5 @@
 <script>
-    export let wordGrid = [
-      [
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-      ],
-      [
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-      ],
-      [
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-      ],
-      [
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-      ],
-      [
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-      ],
-      [
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-        {letter: ''},
-      ],
-    ]
+    export let wordGrid =  [];
 </script>
 
 <div class="tile-container">
