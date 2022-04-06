@@ -26,6 +26,6 @@ const KEYS = [
   'B',
   'N',
   'M',
-  '«',
+  'DELETE',
 ];
 export default KEYS;
