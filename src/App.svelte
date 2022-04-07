@@ -1,10 +1,95 @@
 <script>
   import TileContainer from './components/TileContainer.svelte';
   import Keyboard from './components/Keyboard.svelte';
-  import {wordGrid} from "./Shared/store";
+  import {
+    currentRowIndex,
+    wordGrid,
+    currentTileIndex,
+    wordle,
+    resetGame,
+    setAttemptedLetter,
+  } from "./shared/store";
 
-  const onKeySelected = ({detail}) => {
-    console.log(detail)
+  function setMessage(message) {
+    console.log('message', message);
+    // TODO: replace with store value
+  }
+
+  let isGameOver = false;
+
+  $: wordMap = $wordle.split('').reduce((map, letter) => {
+    if (map[letter]) {
+      map[letter]++
+    } else (map[letter] = 1)
+    return map;
+  }, {});
+
+  const submitWord = () => {
+    const guess = $wordGrid[$currentRowIndex].map(g => g.letter).join('');
+    if (guess.length !== 5) {
+      setMessage('Word not long enough!')
+    } else {
+      setLetterStates()
+      if ($wordle.toUpperCase() === guess) {
+        setMessage('Magnificent!')
+        isGameOver = true;
+      } else {
+        if ($currentRowIndex >= 5) {
+          setMessage('Game Over')
+          isGameOver = true;
+        }
+        if ($currentRowIndex < 5) {
+          $currentRowIndex++;
+          $currentTileIndex = 0;
+        }
+      }
+    }
+  }
+
+  const setLetterStates = () => {
+    const guess = $wordGrid[$currentRowIndex].map((tile, index) => {
+      let classString;
+      if (tile.letter === $wordle[index].toUpperCase()) {
+        classString = 'green-overlay'
+        setAttemptedLetter(tile.letter, classString)
+      } else if (wordMap[tile.letter.toLowerCase()]) {
+        classString = 'yellow-overlay'
+        setAttemptedLetter(tile.letter, classString)
+      } else {
+        setAttemptedLetter(tile.letter, 'black-overlay')
+      }
+      return {letter: tile.letter, class: classString}
+    })
+    $wordGrid[$currentRowIndex] = [...guess];
+  }
+
+  function deleteLetter() {
+    if ($currentTileIndex > 0) {
+      $currentTileIndex--;
+      $wordGrid[$currentRowIndex][$currentTileIndex].letter = '';
+    }
+  }
+
+  function selectKey({detail}) {
+    if (detail === 'DELETE') {
+      deleteLetter()
+    } else if (detail === 'ENTER') {
+      submitWord();
+    } else {
+      addLetter(detail)
+    }
+  }
+
+  function restartGame() {
+    isGameOver = false;
+    resetGame()
+  }
+
+  export const addLetter = (letter) => {
+    if ($currentTileIndex < 5 && $currentRowIndex < 6) {
+      $wordGrid[$currentRowIndex][$currentTileIndex].letter = letter
+    }
+    $currentTileIndex++;
   }
 
 </script>
@@ -13,8 +98,12 @@
     <div class="title-container">
         <h1>Wordle</h1>
     </div>
+    <!--    TODO: add button to reset game when game is over
+            TODO: add message to display info
+    -->
+
     <TileContainer wordGrid={$wordGrid}/>
-    <Keyboard on:selectKey={onKeySelected}/>
+    <Keyboard on:selectKey={selectKey}/>
 </div>
 
 <style>

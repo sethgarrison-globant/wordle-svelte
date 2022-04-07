@@ -1,8 +1,18 @@
 <script>
     import KEYS from "../Shared/keyboard";
     import {createEventDispatcher} from 'svelte';
+    // TODO: add letter states to demonstrate dynamic class
 
     const dispatch = createEventDispatcher();
+
+    document.addEventListener('keydown', ({key}) => {
+      const upperCase = key.toUpperCase();
+      if (KEYS.includes(upperCase) || upperCase === 'ENTER') {
+        dispatch('selectKey', upperCase);
+      } else if (upperCase === 'BACKSPACE') {
+        dispatch('selectKey', 'DELETE');
+      }
+    })
 </script>
 
 <div class="key-container">

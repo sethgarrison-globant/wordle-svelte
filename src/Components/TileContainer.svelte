@@ -6,7 +6,7 @@
     {#each wordGrid as rows}
         <div>
             {#each rows as slot, index}
-                <div class="tile">{slot.letter || ''}</div>
+                <div class="tile {slot.class}">{slot.letter || ''}</div>
             {/each}
         </div>
     {/each}
@@ -32,5 +32,19 @@
         justify-content: center;
         align-items: center;
         margin: 2px;
+    }
+
+    .grey-overlay {
+        background-color: #3a3a3c !important;
+        border:none !important;
+    }
+    .yellow-overlay {
+        background-color: #b59f3a !important;
+        border:none !important;
+    }
+
+    .green-overlay {
+        background-color: #538d4e !important;
+        border:none !important;
     }
 </style>
