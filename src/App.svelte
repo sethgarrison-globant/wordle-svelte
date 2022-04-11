@@ -1,25 +1,23 @@
 <script>
   import TileContainer from './components/TileContainer.svelte';
   import Keyboard from './components/Keyboard.svelte';
+  import Message from "./Components/Message.svelte";
+
   import {
     currentRowIndex,
     wordGrid,
     currentTileIndex,
     wordle,
+    setMessage,
     resetGame,
     setAttemptedLetter,
-  } from "./shared/store";
-
-  function setMessage(message) {
-    console.log('message', message);
-    // TODO: replace with store value
-  }
+  } from "./Shared/gameEngine";
 
   let isGameOver = false;
 
   $: wordMap = $wordle.split('').reduce((map, letter) => {
     if (map[letter]) {
-      map[letter]++
+      map[letter]++;
     } else (map[letter] = 1)
     return map;
   }, {});
@@ -27,15 +25,15 @@
   const submitWord = () => {
     const guess = $wordGrid[$currentRowIndex].map(g => g.letter).join('');
     if (guess.length !== 5) {
-      setMessage('Word not long enough!')
+      setMessage('Word not long enough!');
     } else {
-      setLetterStates()
+      setLetterStates();
       if ($wordle.toUpperCase() === guess) {
-        setMessage('Magnificent!')
+        setMessage('Magnificent!');
         isGameOver = true;
       } else {
         if ($currentRowIndex >= 5) {
-          setMessage('Game Over')
+          setMessage('Game Over');
           isGameOver = true;
         }
         if ($currentRowIndex < 5) {
@@ -50,8 +48,8 @@
     const guess = $wordGrid[$currentRowIndex].map((tile, index) => {
       let classString;
       if (tile.letter === $wordle[index].toUpperCase()) {
-        classString = 'green-overlay'
-        setAttemptedLetter(tile.letter, classString)
+        classString = 'green-overlay';
+        setAttemptedLetter(tile.letter, classString);
       } else if (wordMap[tile.letter.toLowerCase()]) {
         classString = 'yellow-overlay'
         setAttemptedLetter(tile.letter, classString)
@@ -76,18 +74,18 @@
     } else if (detail === 'ENTER') {
       submitWord();
     } else {
-      addLetter(detail)
+      addLetter(detail);
     }
   }
 
   function restartGame() {
     isGameOver = false;
-    resetGame()
+    resetGame();
   }
 
   export const addLetter = (letter) => {
     if ($currentTileIndex < 5 && $currentRowIndex < 6) {
-      $wordGrid[$currentRowIndex][$currentTileIndex].letter = letter
+      $wordGrid[$currentRowIndex][$currentTileIndex].letter = letter;
     }
     $currentTileIndex++;
   }
@@ -98,12 +96,12 @@
     <div class="title-container">
         <h1>Wordle</h1>
     </div>
-    <!--    TODO: add button to reset game when game is over
-            TODO: add message to display info
-    -->
-
+    {#if (isGameOver)}
+        <button on:click={restartGame}>Restart Game!!</button>
+    {/if}
     <TileContainer wordGrid={$wordGrid}/>
     <Keyboard on:selectKey={selectKey}/>
+    <Message />
 </div>
 
 <style>

@@ -11,8 +11,7 @@ let emptyRow = [
     {letter: '', class: ''},
     {letter: '', class: ''},
     {letter: '', class: ''},
-  ]
-;
+  ];
 
 const initialLetterState = {
   A: '',
@@ -57,7 +56,12 @@ export let currentRowIndex = writable(0);
 export let currentTileIndex = writable(0);
 export const letterStates = writable({...initialLetterState});
 export const wordGrid = writable(JSON.parse(JSON.stringify(emptyWordGrid)));
-// todo add message and set message functionality
+export const message = writable(null);
+
+export function setMessage(newMessage) {
+  message.set(newMessage);
+  setTimeout(() => {message.set(null)}, 2000);
+}
 
 const resetGrid = () => { wordGrid.set(JSON.parse(JSON.stringify(emptyWordGrid))) }
 
@@ -65,7 +69,7 @@ export const resetGame = () => {
   letterStates.set({...initialLetterState});
   currentTileIndex.set(0);
   currentRowIndex.set(0);
-  wordle.set(getRandomInt(WORDS.length));
+  wordle.set(WORDS[getRandomInt(WORDS.length)]);
   resetGrid();
 }
 

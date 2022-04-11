@@ -1,7 +1,7 @@
 <script>
     import KEYS from "../Shared/keyboard";
     import {createEventDispatcher} from 'svelte';
-    // TODO: add letter states to demonstrate dynamic class
+    import {letterStates} from "../Shared/gameEngine";
 
     const dispatch = createEventDispatcher();
 
@@ -17,7 +17,11 @@
 
 <div class="key-container">
     {#each KEYS as key, index}
-        <button on:click={() => dispatch('selectKey', key)}>{key}</button>
+        <button
+                class="{$letterStates[key]}"
+                on:click={() => dispatch('selectKey', key)}>
+            {key}
+        </button>
     {/each}
 </div>
 
@@ -45,5 +49,20 @@
     .key-container button:nth-child(20),
     .key-container button:nth-child(28) {
         width: 68px;
+    }
+
+    .black-overlay {
+        background-color: #4f4f54 !important;
+        color: white;
+        border:none !important;
+    }
+    .yellow-overlay {
+        background-color: #b59f3a !important;
+        border:none !important;
+    }
+
+    .green-overlay {
+        background-color: #538d4e !important;
+        border:none !important;
     }
 </style>
